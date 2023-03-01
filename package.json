@@ -8,7 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx webpack --mode production",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "lint": "npx eslint --ext .js,.jsx,.ts,.tsx --fix ./",
+    "check": "npm run lint && npm test && npm run test:loki"
   },
   "author": "wbogatyrewa",
   "license": "ISC",
