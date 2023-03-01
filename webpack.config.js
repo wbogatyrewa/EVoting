@@ -15,8 +15,7 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        loader: "css-loader",
-        options: { modules: true },
+        use: ["style-loader", "css-loader"],
       },
       ...webpackRules,
     ],
