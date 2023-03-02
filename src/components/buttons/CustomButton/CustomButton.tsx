@@ -23,14 +23,12 @@ const theme = createTheme({
   },
 });
 
-export const CustomButton: FC<ButtonProps> = ({ onClick, children, ...props }: ButtonProps) => {
+export const CustomButton: FC<ButtonProps> = ({ children, ...props }: ButtonProps) => {
   return (
   <ThemeProvider theme={theme}>
     <Button 
-      onClick={onClick}
       disableElevation
       disableFocusRipple
-      
       variant="contained"
       sx={{ borderRadius: '100px' }}
       {...props}>
