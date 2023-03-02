@@ -4,6 +4,7 @@ import { CustomButton } from ".";
 
 export default {
   title: "Buttons",
+  component: CustomButton,
 } as ComponentMeta<typeof CustomButton>;
 
 const Template: ComponentStory<typeof CustomButton> = (args) => 

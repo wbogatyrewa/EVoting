@@ -30,7 +30,7 @@ export const CustomButton: FC<ButtonProps> = ({ onClick, children, ...props }: B
       onClick={onClick}
       disableElevation
       disableFocusRipple
-      disableRipple
+      
       variant="contained"
       sx={{ borderRadius: '100px' }}
       {...props}>
