@@ -6,6 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 export default {
   title: "Buttons",
   component: CustomIconButton,
+  argTypes: { onClick: { action: 'clicked' } },
 } as ComponentMeta<typeof CustomIconButton>;
 
 const Template: ComponentStory<typeof CustomIconButton> = (args) => 
