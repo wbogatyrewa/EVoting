@@ -2,8 +2,7 @@ import React from "react";
 import { Logo } from "./Logo";
 
 export default {
-  title: "Logo",
-
+  title: "Header",
 }
 
 export const headerLogo = () => [
