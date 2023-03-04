@@ -29,7 +29,6 @@ export const CustomButton: FC<ButtonProps> = ({ children, ...props }: ButtonProp
     <Button 
       disableElevation
       disableFocusRipple
-      variant="contained"
       sx={{ borderRadius: '100px' }}
       {...props}>
         {children}
