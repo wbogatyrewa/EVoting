@@ -31,6 +31,7 @@ export const Header: FC<Props> = ({ account, onLogin, childrenButton }: Props) =
           <UserAccount icon={<MetaMaskIcon />} account={account} />
           : 
           <CustomButton
+            variant="contained"
             onClick={onLogin}
             startIcon={<MetaMaskIcon />}>
               {childrenButton}
