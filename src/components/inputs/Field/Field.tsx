@@ -37,6 +37,7 @@ export const Field: FC<Props> = ({ label, helperText, startAdornment, endAdornme
         <InputLabel htmlFor={`field-${label}`}>{label}</InputLabel>
         <OutlinedInput
           id={`field-${label}`}
+          autoComplete="off"
           label={label}
           onFocus={handleFocus}
           onBlur={handleBlur}
