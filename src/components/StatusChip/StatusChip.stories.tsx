@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { StatusChip } from './StatusChip';
 
 export default {
-  title: "Cards",
+  title: "Cards/Status",
   component: StatusChip,
 } as ComponentMeta<typeof StatusChip>;
 
@@ -20,6 +20,13 @@ VotingInProgress.args = {
 export const ComingSoon = Template.bind({});
 ComingSoon.args = {
   label: "Скоро начнется",
+  color: "info",
+  onDelete: undefined,
+};
+
+export const Finished = Template.bind({});
+Finished.args = {
+  label: "Завершено",
   color: "info",
   onDelete: undefined,
 };
