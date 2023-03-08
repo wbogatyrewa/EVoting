@@ -25,6 +25,12 @@ const theme = createTheme({
       primary: "#000000"
     },
   },
+  typography: {
+    subtitle1: {
+      fontWeight: 600,
+      fontSize: "0.875rem"
+    }
+  }
 });
 
 export const VotingCard: FC<Props> = ({ name, startDateTime, endDateTime }: Props) => {
@@ -40,14 +46,21 @@ export const VotingCard: FC<Props> = ({ name, startDateTime, endDateTime }: Prop
             <Typography variant="subtitle1" color="text.primary" gutterBottom>
               {name}
             </Typography>
-            <Typography variant="body2" color="text.primary" gutterBottom>
-              {
-                status === Status.Active ?
-                `до ${endDateTime.toLocaleDateString()} ${endDateTime.toLocaleTimeString()}` : 
-                `${startDateTime.toLocaleDateString()} ${startDateTime.toLocaleTimeString()} - 
-                ${endDateTime.toLocaleDateString()} ${endDateTime.toLocaleTimeString()}`
-              }
-            </Typography>
+            {
+              status === Status.Active ?
+              <Typography variant="body2" color="text.primary" gutterBottom>
+                {`до ${endDateTime.toLocaleDateString()} ${endDateTime.toLocaleTimeString()}`}
+              </Typography>
+              :
+              <>
+                <Typography variant="body2" color="text.primary">
+                  {`с ${startDateTime.toLocaleDateString()} ${startDateTime.toLocaleTimeString()}`}
+                </Typography>
+                <Typography variant="body2" color="text.primary" gutterBottom>
+                  {`до ${endDateTime.toLocaleDateString()} ${endDateTime.toLocaleTimeString()}`}
+                </Typography>
+              </>
+            }
             <StatusChip label={status} color={status === Status.Active ? "success" : "info"} />
           </CardContent>
         </CardActionArea>
