@@ -3,3 +3,8 @@ export enum Status {
   Before = "Скоро начнется",
   Finished = "Завершено"
 }
+
+export interface Answer {
+  label: string;
+  result?: number;
+}
