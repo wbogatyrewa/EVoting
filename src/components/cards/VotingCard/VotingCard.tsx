@@ -1,12 +1,7 @@
 import { Card, CardActionArea, CardContent, createTheme, ThemeProvider, Typography } from "@mui/material";
 import React, { FC } from "react";
-import { StatusChip } from "../StatusChip";
-
-export enum Status {
-  Active = "Идет голосование",
-  Before = "Скоро начнется",
-  Finished = "Завершено"
-}
+import { StatusChip } from "../../StatusChip";
+import { Status } from "../../Types";
 
 export interface Props {
   name: string;
