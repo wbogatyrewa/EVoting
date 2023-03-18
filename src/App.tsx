@@ -1,11 +1,15 @@
-import { ThemeProvider } from "@mui/material";
+import { Container } from "@mui/system";
 import React from "react";
-import { globalTheme } from "./globalTheme";
+import { Header } from "./components/Header";
+import { MainPage } from "./components/pages/MainPage";
 
 export const App: React.FC<unknown> = () => {
   return (
-    <ThemeProvider theme={globalTheme}>
-      
-    </ThemeProvider>
+    <>
+      <Header />
+      <Container maxWidth="lg">
+        <MainPage />
+      </Container>
+    </>
   );
 };

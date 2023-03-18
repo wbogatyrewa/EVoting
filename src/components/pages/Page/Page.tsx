@@ -9,7 +9,7 @@ export interface PageProps {
 export const Page: FC<PageProps> = ({ title, children }: PageProps) => {
   return (
     <Box>
-      <Typography variant="h4" gutterBottom>{title}</Typography>
+      <Typography variant="h4" mb={3}>{title}</Typography>
       {children}
     </Box>
   );

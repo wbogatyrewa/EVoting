@@ -49,11 +49,31 @@ export const MainPage: FC<unknown> = () => {
       startDateTime: new Date('March 1, 2023 03:24:00'),
       endDateTime: new Date('March 31, 2023 03:24:00')
     },
+    {
+      name: "Чизбургер или чикенбургер?",
+      startDateTime: new Date('March 1, 2023 03:24:00'),
+      endDateTime: new Date('March 31, 2023 03:24:00')
+    },
+    {
+      name: "Чизбургер или чикенбургер?",
+      startDateTime: new Date('March 1, 2023 03:24:00'),
+      endDateTime: new Date('March 5, 2023 03:24:00')
+    },
+    {
+      name: "Чизбургер или чикенбургер?",
+      startDateTime: new Date('March 30, 2023 03:24:00'),
+      endDateTime: new Date('March 31, 2023 03:24:00')
+    },
+    {
+      name: "Чизбургер или чикенбургер?",
+      startDateTime: new Date('March 1, 2023 03:24:00'),
+      endDateTime: new Date('March 31, 2023 03:24:00')
+    },
   ]
 
   return (
     <Page title="Голосования">
-      <Grid container spacing={2} mb={8}>
+      <Grid container spacing={2} mb={4}>
         <Grid item xs={6}>
           <Field 
             label="Название голосования"
@@ -75,7 +95,7 @@ export const MainPage: FC<unknown> = () => {
             />
         </Grid>
       </Grid>
-      <Grid container spacing={2}>
+      <Grid container rowSpacing={4} columnSpacing={2}>
         {renderVotingCards(cardsList)}
       </Grid>
     </Page>
