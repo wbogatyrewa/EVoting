@@ -1,9 +1,11 @@
-import { createTheme, FormControl, FormHelperText, InputLabel, InputLabelProps, InputProps, OutlinedInput, ThemeProvider } from "@mui/material";
-import React, { FC, useState } from "react";
+import { createTheme, FormControl, FormHelperText, InputLabel, InputProps, OutlinedInput, ThemeProvider } from "@mui/material";
+import React, { ChangeEventHandler, FC, useState } from "react";
 
 export interface Props {
   label: string;
   helperText?: string;
+  value: string;
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   props?: InputProps;
   startAdornment?: React.ReactNode;
   endAdornment?: React.ReactNode;
@@ -19,7 +21,7 @@ const theme = createTheme({
   }
 });
 
-export const Field: FC<Props> = ({ label, helperText, startAdornment, endAdornment, props }: Props) => {
+export const Field: FC<Props> = ({ label, helperText, startAdornment, endAdornment, value, handleChange, props }: Props) => {
   const [fieldBlur, setFieldBlur] = useState<boolean>(false);
 
   const handleFocus = () => setFieldBlur(true);
@@ -39,6 +41,8 @@ export const Field: FC<Props> = ({ label, helperText, startAdornment, endAdornme
           id={`field-${label}`}
           autoComplete="off"
           label={label}
+          value={value}
+          onChange={handleChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
           startAdornment={

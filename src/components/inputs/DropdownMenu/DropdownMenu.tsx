@@ -1,10 +1,10 @@
-import { Box, createTheme, FormControl, InputLabel, MenuItem, Select, ThemeProvider } from "@mui/material";
+import { Box, createTheme, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, ThemeProvider } from "@mui/material";
 import React, { FC } from "react";
 
 export interface Props {
   label: string;
   value: string;
-  handleChange: () => void;
+  handleChange: (e: SelectChangeEvent<string>) => void;
   menuItems: Array<string>;
 }
 
