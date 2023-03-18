@@ -41,21 +41,12 @@ export const VotingCard: FC<Props> = ({ name, startDateTime, endDateTime }: Prop
             <Typography variant="subtitle1" color="text.primary" gutterBottom>
               {name}
             </Typography>
-            {
-              status === Status.Active ?
-              <Typography variant="body2" color="text.primary" gutterBottom>
-                {`до ${endDateTime.toLocaleDateString()} ${endDateTime.toLocaleTimeString()}`}
-              </Typography>
-              :
-              <>
-                <Typography variant="body2" color="text.primary">
-                  {`с ${startDateTime.toLocaleDateString()} ${startDateTime.toLocaleTimeString()}`}
-                </Typography>
-                <Typography variant="body2" color="text.primary" gutterBottom>
-                  {`до ${endDateTime.toLocaleDateString()} ${endDateTime.toLocaleTimeString()}`}
-                </Typography>
-              </>
-            }
+            <Typography variant="body2" color="text.primary">
+              {`с ${startDateTime.toLocaleDateString()} ${startDateTime.toLocaleTimeString()}`}
+            </Typography>
+            <Typography variant="body2" color="text.primary" gutterBottom>
+              {`до ${endDateTime.toLocaleDateString()} ${endDateTime.toLocaleTimeString()}`}
+            </Typography>
             <StatusChip label={status} color={status === Status.Active ? "success" : "info"} />
           </CardContent>
         </CardActionArea>
