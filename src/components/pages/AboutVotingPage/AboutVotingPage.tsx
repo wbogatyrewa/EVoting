@@ -17,7 +17,7 @@ export const AboutVotingPage: FC<Props> = ({title, startDateTime, endDateTime, l
   const handleClickClose = () => {};
 
   return (
-    <Page title={title} closed handleClose={handleClickClose}>
+    <Page title={title} closed handleClose={handleClickClose} voted>
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <Box mb={2}>
