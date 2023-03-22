@@ -14,12 +14,12 @@ export const Page: FC<PageProps> = ({ title, closed = false, handleClose = () =>
   return (
     <Box>
       <Grid container spacing={2}>
-        <Grid item xs={10}>
+        <Grid item xs={11}>
           <Typography variant="h4" mb={3}>{title}</Typography>
         </Grid>
         {
           closed ? 
-          <Grid item xs={2}>
+          <Grid item xs={1}>
             <CustomIconButton onClick={handleClose}><CloseIcon /></CustomIconButton>
           </Grid>
           : null
