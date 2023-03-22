@@ -11,7 +11,7 @@ export default {
 
 const Template: ComponentStory<typeof AboutVotingPage> = (args) =>
 <>
-  <Header childrenButton="Авторизоваться" />
+  <Header account="0x543EbD3F56B2b9848b246C689E0302dC06CcFa48" />
   <Container maxWidth="lg" sx={{
         marginTop: "32px",
         "@media (min-width: 1200px)": {

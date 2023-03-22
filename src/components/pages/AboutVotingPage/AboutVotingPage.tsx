@@ -20,7 +20,7 @@ export const AboutVotingPage: FC<Props> = ({title, startDateTime, endDateTime, l
     <Page title={title} closed handleClose={handleClickClose}>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <Box mb={4}>
+          <Box mb={2}>
             <AboutVotingCard 
               startDateTime={startDateTime} 
               endDateTime={endDateTime} 
