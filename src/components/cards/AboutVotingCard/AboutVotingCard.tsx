@@ -32,7 +32,7 @@ export const AboutVotingCard: FC<Props> = ({ startDateTime, endDateTime, link }:
   return (
     <ThemeProvider theme={theme}>
       <Card elevation={0}>
-        <CardContent>
+        <CardContent sx={{ padding: 0 }}>
           <Typography variant="subtitle1" color="text.primary" gutterBottom>
             О голосовании
           </Typography>
