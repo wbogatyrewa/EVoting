@@ -2,6 +2,7 @@ import { createTheme, FormControl, FormHelperText, InputLabel, InputProps, Outli
 import React, { ChangeEventHandler, FC, useState } from "react";
 
 export interface Props {
+  id?: string;
   label: string;
   helperText?: string;
   value: string;
@@ -21,7 +22,7 @@ const theme = createTheme({
   }
 });
 
-export const Field: FC<Props> = ({ label, helperText, startAdornment, endAdornment, value, handleChange, props }: Props) => {
+export const Field: FC<Props> = ({ id = "", label, helperText, startAdornment, endAdornment, value, handleChange, props }: Props) => {
   const [fieldBlur, setFieldBlur] = useState<boolean>(false);
 
   const handleFocus = () => setFieldBlur(true);
@@ -38,7 +39,7 @@ export const Field: FC<Props> = ({ label, helperText, startAdornment, endAdornme
       <FormControl variant='outlined' fullWidth>
         <InputLabel htmlFor={`field-${label}`}>{label}</InputLabel>
         <OutlinedInput
-          id={`field-${label}`}
+          id={id}
           autoComplete="off"
           label={label}
           value={value}
