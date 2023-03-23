@@ -22,59 +22,74 @@ const theme = createTheme({
   }
 });
 
-const renderAnswerField = (value: string, handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void) =>
-  <Box key={value} mb={2}>
-    <Field 
-      label={"Вариант ответа"}
-      helperText={"Введите вариант ответа"}
-      value={value} handleChange={handleChange} 
-      endAdornment={
-        <InputAdornment position="end">
-          <CustomIconButton>
-            <HighlightOffIcon />
-          </CustomIconButton>
-        </InputAdornment>
-      }
-    />
-  </Box>
+const renderAnswerField = (answers: string[], setAnswers: React.Dispatch<React.SetStateAction<string[]>>) => {
+  const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let id = Number(event.target.id);
+    let answer = event.target.value;
+    let newArray = answers.map((elem, index) => index === id ? answer : elem);
+    setAnswers(newArray);
+  }
+
+  return (
+    answers.map((elem, index) =>
+      <Box key={index.toString()} mb={2}>
+        <Field 
+          id={`${index.toString()}`}
+          label={"Вариант ответа"}
+          helperText={"Введите вариант ответа"}
+          value={elem} handleChange={handleChangeAnswer} 
+          endAdornment={
+            elem ? 
+            <InputAdornment position="end">
+              <CustomIconButton>
+                <HighlightOffIcon />
+              </CustomIconButton>
+            </InputAdornment>
+            : null
+          }
+        />
+      </Box>
+    )
+  )
+};
 
 export const CreateVotingPage: FC<unknown> = () => {
+  // добавить валидацию, стейты для каждого ответа??
+
   const [name, setName] = useState<string>("");
   const [emails, setEmails] = useState<string>("");
   const [addresses, setAddresses] = useState<string>("");
-  const [answers, setAnswers] = useState<{
-    value: string, 
-    handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  }[]>([
-    {value: "", handleChange: (event: React.ChangeEvent<HTMLInputElement>) => {}}, 
-    {value: "", handleChange: (event: React.ChangeEvent<HTMLInputElement>) => {}}
-  ]);
+  const [answers, setAnswers] = useState<string[]>(["", ""]);
 
   const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   }
 
   const handleChangeEmails = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
+    setEmails(event.target.value);
   }
 
   const handleChangeAddresses = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
+    setAddresses(event.target.value);
   }
 
   const handleClickAddAnswer = () => {
-    let answer = "";
-    const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => answer = event.target.value;
-    setAnswers([...answers, { value: answer, handleChange: handleChangeAnswer }]);
+    // let answer = "";
+    // const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => answer = event.target.value;
+    setAnswers([...answers, ""]);
   }
 
   const handleClickCreateVoting = () => {
     // create voting
   }
 
+  const handleClose = () => {
+    // close - routing on main page
+  }
+
   return (
     <ThemeProvider theme={theme}>
-      <Page title="Создание голосования">
+      <Page title="Создание голосования" closed handleClose={handleClose}>
         <Grid container spacing={10}>
           <Grid item xs={6}>
             <Box mb={2}>
@@ -97,7 +112,7 @@ export const CreateVotingPage: FC<unknown> = () => {
             <Box mb={2}>
               <Typography variant="subtitle1" color="text.primary" gutterBottom>Варианты ответов</Typography>
               {
-                answers.map((elem) => renderAnswerField(elem.value, elem.handleChange))
+                renderAnswerField(answers, setAnswers)
               }
               <CustomButton 
                 variant="text" 
