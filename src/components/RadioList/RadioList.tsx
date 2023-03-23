@@ -5,6 +5,7 @@ import { Answer } from "../Types";
 export interface Props {
   label?: string;
   radioList: Array<Answer>;
+  disabled?: boolean;
   props?: RadioGroupProps;
 }
 
@@ -27,14 +28,15 @@ const theme = createTheme({
   }
 });
 
-const renderRadioList = (radioList: Array<Answer>) => {
+const renderRadioList = (radioList: Array<Answer>, disabled: boolean) => {
   const max = radioList.reduce((prev, current) => ((prev.result || 0) > (current.result || 0)) ? prev : current)
+  
   return (
     radioList.map(item =>
       <FormControlLabel 
         value={item.label} 
         control={<Radio />} 
-        disabled={item.result ? true : false}
+        disabled={disabled ? true : item.result ? true : false}
         label={item.result ? `${item.label} (${item.result}%)` : item.label}
         sx={{
           backgroundColor: (max.label === item.label && max.result) ? 'primary.light' : 'transparent',
@@ -48,7 +50,7 @@ const renderRadioList = (radioList: Array<Answer>) => {
 
     
 
-export const RadioList: FC<Props> = ({ label, radioList, props }: Props) => {
+export const RadioList: FC<Props> = ({ label, radioList, disabled = false, props }: Props) => {
   return (
     <ThemeProvider theme={theme}>
       <FormControl fullWidth>
@@ -61,7 +63,7 @@ export const RadioList: FC<Props> = ({ label, radioList, props }: Props) => {
           {...props}
         >
           {
-            renderRadioList(radioList)
+            renderRadioList(radioList, disabled)
           }
         </RadioGroup>
       </FormControl>

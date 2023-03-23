@@ -11,13 +11,14 @@ interface Props {
   endDateTime: Date;
   link: string;
   answers: Array<Answer>;
+  account?: string;
 }
 
-export const AboutVotingPage: FC<Props> = ({title, startDateTime, endDateTime, link, answers}: Props) => {
+export const AboutVotingPage: FC<Props> = ({title, startDateTime, endDateTime, link, answers, account}: Props) => {
   const handleClickClose = () => {};
 
   return (
-    <Page title={title} closed handleClose={handleClickClose} voted>
+    <Page title={title} closed handleClose={handleClickClose} voted={account ? true : false}>
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <Box mb={2}>
@@ -28,7 +29,7 @@ export const AboutVotingPage: FC<Props> = ({title, startDateTime, endDateTime, l
             />
           </Box>
           <Box>
-            <RadioList label="Варианты ответов" radioList={answers} />
+            <RadioList label="Варианты ответов" radioList={answers} disabled={account ? false : true} />
           </Box>
         </Grid>
       </Grid>
