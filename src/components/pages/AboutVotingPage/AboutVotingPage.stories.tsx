@@ -50,3 +50,17 @@ AboutVotingActiveVoted.args = {
   isVoted: true,
 };
 
+export const AboutVotingBefore= Template.bind({});
+AboutVotingBefore.args = {
+  title: "AppLe или AnDrOiD?",
+  startDateTime: new Date('March 30, 2023 03:24:00'),
+  endDateTime: new Date('March 31, 2023 03:24:00'),
+  answers: [
+    { label: "Apple" },
+    { label: "Android" }
+  ],
+  linkSmartContract: "https://etherscan.io/",
+  account: "0x543EbD3F56B2b9848b246C689E0302dC06CcFa48",
+  linkVote: "https://etherscan.io/",
+};
+
