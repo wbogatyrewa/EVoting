@@ -28,8 +28,8 @@ const theme = createTheme({
   }
 });
 
-const renderRadioList = (radioList: Array<Answer>, disabled: boolean) => {
-  const max = radioList.reduce((prev, current) => ((prev.result || 0) > (current.result || 0)) ? prev : current)
+const renderRadioList = (radioList: Array<Answer>, disabled?: boolean) => {
+  const max = radioList.reduce((prev, current) => ((prev.result || 0) > (current.result || 0)) ? prev : current, { label: "", result: 0 });
   
   return (
     radioList.map(item =>
@@ -50,7 +50,7 @@ const renderRadioList = (radioList: Array<Answer>, disabled: boolean) => {
 
     
 
-export const RadioList: FC<Props> = ({ label, radioList, disabled = false, props }: Props) => {
+export const RadioList: FC<Props> = ({ label, radioList = [], disabled = false, props }: Props) => {
   return (
     <ThemeProvider theme={theme}>
       <FormControl fullWidth>
