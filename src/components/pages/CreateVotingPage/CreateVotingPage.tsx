@@ -1,5 +1,5 @@
 import { Box, createTheme, Grid, InputAdornment, ThemeProvider, Typography } from "@mui/material";
-import React, { FC, ReactElement, useState } from "react";
+import React, { FC, useState } from "react";
 import { CustomIconButton } from "../../buttons/CustomIconButton";
 import { Field } from "../../inputs/Field";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
@@ -54,7 +54,7 @@ const renderAnswerField = (answers: string[], setAnswers: React.Dispatch<React.S
 };
 
 export const CreateVotingPage: FC<unknown> = () => {
-  // добавить валидацию, стейты для каждого ответа??
+  // добавить валидацию
 
   const [name, setName] = useState<string>("");
   const [emails, setEmails] = useState<string>("");
