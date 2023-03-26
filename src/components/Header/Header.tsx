@@ -9,7 +9,6 @@ import { UserAccount } from "./UserAccount";
 export interface Props {
   account?: string;
   onLogin?: () => void;
-  childrenButton?: React.ReactNode;
 }
 
 const HeaderWrapper = styled.header`
@@ -19,7 +18,7 @@ const HeaderWrapper = styled.header`
   padding: 16px 48px;
 `;
 
-export const Header: FC<Props> = ({ account, onLogin, childrenButton }: Props) => {
+export const Header: FC<Props> = ({ account, onLogin = () => {} }: Props) => {
   return (
     <HeaderWrapper>
       <Box>
@@ -34,7 +33,7 @@ export const Header: FC<Props> = ({ account, onLogin, childrenButton }: Props) =
             variant="contained"
             onClick={onLogin}
             startIcon={<MetaMaskIcon />}>
-              {childrenButton}
+              Авторизоваться
         </CustomButton>
         }
       </Box>

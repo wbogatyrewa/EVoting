@@ -11,9 +11,6 @@ const Template: ComponentStory<typeof Header> = (args) =>
   <Header {...args}></Header>
 
 export const LoggedOut = Template.bind({});
-LoggedOut.args = {
-  childrenButton: "Авторизоваться"
-}
 
 export const LoggedIn = Template.bind({});
 LoggedIn.args = {
