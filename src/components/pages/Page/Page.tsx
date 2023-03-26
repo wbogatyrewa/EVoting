@@ -3,39 +3,44 @@ import React, { FC } from "react";
 import { CustomIconButton } from "../../buttons/CustomIconButton";
 import CloseIcon from '@mui/icons-material/Close';
 import { CustomButton } from "../../buttons/CustomButton";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export interface PageProps {
   title: React.ReactNode;
   closed?: boolean;
-  voted?: boolean;
-  handleVote?: () => void;
+  account?: string;
+  handleClick?: () => void;
+  buttonChildren?: React.ReactNode;
+  buttonIcon?: React.ReactNode;
   disabledBtn?: boolean;
   children: React.ReactNode;
 }
 
 export const Page: FC<PageProps> = ({ 
         title, closed = false, disabledBtn = false,
-        voted = false, handleVote = () => {}, children }: PageProps) => {
+        account, handleClick = () => {}, buttonChildren, buttonIcon, children }: PageProps) => {
+
+  const navigate = useNavigate();
 
   const handleClose = () => {
-
+    navigate('/');
   };
 
   return (
     <Box>
       <Grid container spacing={2}>
-        <Grid item xs={voted ? 9 : 11}>
+        <Grid item xs={account && closed ? 8 : account ? 9 : 11}>
           <Typography variant="h4" mb={3}>{title}</Typography>
         </Grid>
         {
-          voted ?
-          <Grid item xs={2}>
+          account ?
+          <Grid item xs={closed ? 2 : 3}>
             <CustomButton 
               variant="contained" 
-              onClick={handleVote}
-              disabled={disabledBtn}>
-                Проголосовать
+              onClick={handleClick}
+              disabled={disabledBtn}
+              startIcon={buttonIcon}>
+                {buttonChildren}
             </CustomButton>
           </Grid>
           : null
@@ -43,7 +48,7 @@ export const Page: FC<PageProps> = ({
         {
           closed ? 
           <Grid item xs={1}>
-            <Link to="/"><CustomIconButton><CloseIcon /></CustomIconButton></Link>
+            <CustomIconButton onClick={handleClose}><CloseIcon /></CustomIconButton>
           </Grid>
           : null
         }

@@ -1,13 +1,14 @@
 import { Container } from "@mui/system";
 import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Header } from "./components/Header";
-import { MainPage } from "./components/pages/MainPage";
 import type { RootState } from "./app/store";
 import { useSelector, useDispatch } from "react-redux";
+import { Header } from "./components/Header";
+import { MainPage } from "./components/pages/MainPage";
 import { login } from "./scripts/login";
 import { setAccount } from "./features/accountSlice";
 import { checkAccount } from "./scripts/checkAccount";
+import { CreateVotingPage } from "./components/pages/CreateVotingPage";
 
 export const App: React.FC<unknown> = () => {
   const account = useSelector((state: RootState) => state.account.value);
@@ -32,7 +33,8 @@ export const App: React.FC<unknown> = () => {
       <Header account={account} onLogin={handleLogin} />
       <Container maxWidth="lg">
       <Routes>
-          <Route path='/' element={<MainPage />} /> 
+          <Route path='/' element={<MainPage />} />
+          <Route path='/create' element={<CreateVotingPage />} />
       </Routes>
       </Container>
     </BrowserRouter>
