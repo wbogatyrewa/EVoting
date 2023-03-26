@@ -5,6 +5,7 @@ import { Box } from "@mui/material";
 import { CustomButton } from "../buttons/CustomButton";
 import { MetaMaskIcon } from "../icons";
 import { UserAccount } from "./UserAccount";
+import { Link } from "react-router-dom";
 
 export interface Props {
   account?: string;
@@ -22,7 +23,7 @@ export const Header: FC<Props> = ({ account, onLogin = () => {} }: Props) => {
   return (
     <HeaderWrapper>
       <Box>
-        <Logo />
+        <Link to="/"><Logo /></Link>
       </Box>
       <Box>
         {
