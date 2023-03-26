@@ -1,5 +1,5 @@
 import { Grid, InputAdornment, SelectChangeEvent } from "@mui/material";
-import React, { FC, useState } from "react";
+import React, { FC, useMemo, useState } from "react";
 import type { RootState } from "../../../app/store";
 import { useSelector, useDispatch } from "react-redux";
 import { Field } from "../../inputs/Field";
@@ -11,6 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
 import { CustomIconButton } from "../../buttons/CustomIconButton";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { Status } from "../../Types";
 
 const renderVotingCards = (list: Props[]) => list.map((item) => 
   <Grid item xs={3} key={item.name} >
@@ -27,23 +28,8 @@ export const MainPage: FC<unknown> = () => {
   const [name, setName] = useState<string>("");
   const [status, setStatus] = useState<string>("");
   const navigate = useNavigate();
-  
-  const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  };
 
-  const handleChangeStatus = (e: SelectChangeEvent<string>) => {
-    setStatus(e.target.value);
-  };
-
-  const handleCreate = () => {
-    navigate('/create');
-  };
-
-  const handleClearName = () => setName("");
-
-
-  const cardsList: Props[] = [
+  const votings: Props[] = [
     {
       name: "Чизбургер или чикенбургер?",
       startDateTime: new Date('March 1, 2023 03:24:00'),
@@ -85,6 +71,30 @@ export const MainPage: FC<unknown> = () => {
       endDateTime: new Date('March 31, 2023 03:24:00')
     },
   ]
+  
+  const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
+
+  const handleChangeStatus = (e: SelectChangeEvent<string>) => {
+    setStatus(e.target.value);
+  };
+
+  const handleCreate = () => {
+    navigate('/create');
+  };
+
+  const handleClearName = () => setName("");
+
+  // кроме статуса "ВСЕ" (обработать это)
+  const filterVotings = useMemo(
+    () => votings.filter(voting => {
+      let now = new Date().getTime();
+      let votingStatus = now >= voting.startDateTime.getTime() ? now <= voting.endDateTime.getTime() ? 
+        Status.Active : Status.Finished : Status.Before;
+      return voting.name === name && votingStatus === status;
+    }), 
+    [name, status]);
 
   return (
     <Page 
@@ -126,7 +136,7 @@ export const MainPage: FC<unknown> = () => {
         </Grid>
       </Grid>
       <Grid container rowSpacing={4} columnSpacing={2}>
-        {renderVotingCards(cardsList)}
+        {renderVotingCards(votings)}
       </Grid>
     </Page>
   );
