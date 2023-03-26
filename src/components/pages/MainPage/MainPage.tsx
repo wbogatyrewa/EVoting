@@ -9,6 +9,8 @@ import { DropdownMenu } from "../../inputs/DropdownMenu";
 import { Props, VotingCard } from "../../cards/VotingCard/VotingCard";
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
+import { CustomIconButton } from "../../buttons/CustomIconButton";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const renderVotingCards = (list: Props[]) => list.map((item) => 
   <Grid item xs={3} key={item.name} >
@@ -28,15 +30,18 @@ export const MainPage: FC<unknown> = () => {
   
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
-  }
+  };
 
   const handleChangeStatus = (e: SelectChangeEvent<string>) => {
     setStatus(e.target.value);
-  }
+  };
 
   const handleCreate = () => {
     navigate('/create');
-  }
+  };
+
+  const handleClearName = () => setName("");
+
 
   const cardsList: Props[] = [
     {
@@ -91,6 +96,7 @@ export const MainPage: FC<unknown> = () => {
       <Grid container spacing={2} mb={4}>
         <Grid item xs={6}>
           <Field 
+            id="filter-name-field"
             label="Название голосования"
             value={name}
             handleChange={handleChangeName}
@@ -98,6 +104,15 @@ export const MainPage: FC<unknown> = () => {
               <InputAdornment position="start">
                 <SearchIcon />
               </InputAdornment>
+            }
+            endAdornment={
+              name ? 
+              <InputAdornment position="end">
+                <CustomIconButton onClick={handleClearName}>
+                  <HighlightOffIcon />
+                </CustomIconButton>
+              </InputAdornment>
+              : null
             }
            />
         </Grid>

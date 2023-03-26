@@ -89,7 +89,7 @@ export const CreateVotingPage: FC<unknown> = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Page title="Создание голосования" closed handleClose={handleClose}>
+      <Page title="Создание голосования" closed>
         <Grid container spacing={10}>
           <Grid item xs={6}>
             <Box mb={2}>

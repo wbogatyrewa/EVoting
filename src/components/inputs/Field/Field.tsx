@@ -27,7 +27,7 @@ export const Field: FC<Props> = ({ id = "", label, helperText, startAdornment, e
 
   const handleFocus = () => setFieldBlur(true);
   const handleBlur = () => {
-    if (props?.value?.toString().length !== 0) {
+    if (value?.toString().length !== 0) {
       setFieldBlur(true);
     } else {
       setFieldBlur(false);
