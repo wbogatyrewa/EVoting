@@ -3,11 +3,11 @@ import React, { FC } from "react";
 import { CustomIconButton } from "../../buttons/CustomIconButton";
 import CloseIcon from '@mui/icons-material/Close';
 import { CustomButton } from "../../buttons/CustomButton";
+import { Link } from "react-router-dom";
 
 export interface PageProps {
   title: React.ReactNode;
   closed?: boolean;
-  handleClose?: () => void;
   voted?: boolean;
   handleVote?: () => void;
   disabledBtn?: boolean;
@@ -15,8 +15,13 @@ export interface PageProps {
 }
 
 export const Page: FC<PageProps> = ({ 
-        title, closed = false, handleClose = () => {}, disabledBtn = false,
+        title, closed = false, disabledBtn = false,
         voted = false, handleVote = () => {}, children }: PageProps) => {
+
+  const handleClose = () => {
+
+  };
+
   return (
     <Box>
       <Grid container spacing={2}>
@@ -38,7 +43,7 @@ export const Page: FC<PageProps> = ({
         {
           closed ? 
           <Grid item xs={1}>
-            <CustomIconButton onClick={handleClose}><CloseIcon /></CustomIconButton>
+            <Link to="/"><CustomIconButton><CloseIcon /></CustomIconButton></Link>
           </Grid>
           : null
         }

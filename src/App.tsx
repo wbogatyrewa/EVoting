@@ -1,5 +1,6 @@
 import { Container } from "@mui/system";
 import React, { useEffect } from "react";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Header } from "./components/Header";
 import { MainPage } from "./components/pages/MainPage";
 import type { RootState } from "./app/store";
@@ -27,11 +28,13 @@ export const App: React.FC<unknown> = () => {
   }, []);
 
   return (
-    <>
+    <BrowserRouter>
       <Header account={account} onLogin={handleLogin} />
       <Container maxWidth="lg">
-        <MainPage />
+      <Routes>
+          <Route path='/' element={<MainPage />} /> 
+      </Routes>
       </Container>
-    </>
+    </BrowserRouter>
   );
 };
