@@ -9,6 +9,7 @@ import { login } from "./scripts/login";
 import { setAccount } from "./features/accountSlice";
 import { checkAccount } from "./scripts/checkAccount";
 import { CreateVotingPage } from "./components/pages/CreateVotingPage";
+import { AboutVotingPage } from "./components/pages/AboutVotingPage";
 
 export const App: React.FC<unknown> = () => {
   const account = useSelector((state: RootState) => state.account.value);
@@ -35,6 +36,7 @@ export const App: React.FC<unknown> = () => {
       <Routes>
           <Route path='/' element={<MainPage />} />
           <Route path='/create' element={<CreateVotingPage />} />
+          <Route path='/voting/:votingAddress' element={<AboutVotingPage />} />
       </Routes>
       </Container>
     </BrowserRouter>

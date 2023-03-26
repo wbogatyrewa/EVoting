@@ -7,31 +7,29 @@ import { Answer, Status } from "../../Types";
 import { Page } from "../Page";
 
 interface Props {
-  title: string;
-  startDateTime: Date;
-  endDateTime: Date;
-  linkSmartContract: string;
-  answers: Array<Answer>;
+  title?: string;
+  startDateTime?: Date;
+  endDateTime?: Date;
+  linkSmartContract?: string;
+  answers?: Array<Answer>;
   account?: string;
   linkVote?: string;
-  isVoted: boolean;
+  isVoted?: boolean;
 }
 
 export const AboutVotingPage: FC<Props> = ({title, startDateTime = new Date("March 1, 2023 03:24:00"), 
-          endDateTime = new Date("March 31, 2023 03:24:00"), linkSmartContract, answers, 
+          endDateTime = new Date("March 31, 2023 03:24:00"), linkSmartContract = "", answers = [], 
           account, linkVote = "", isVoted = false}: Props) => {
   const now = new Date().getTime();
   const status = now >= startDateTime.getTime() ? now <= endDateTime.getTime() ? 
     Status.Active : Status.Finished : Status.Before;
   
-  const handleClickClose = () => {};
 
   return (
     <Page 
       title={title} 
       closed 
-      handleClose={handleClickClose} 
-      voted={account ? true : false} 
+      account={account} 
       disabledBtn={isVoted || status === Status.Before || status === Status.Finished}>
       <Grid container spacing={2}>
         <Grid item xs={4}>
