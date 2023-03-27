@@ -88,12 +88,26 @@ export const MainPage: FC<unknown> = () => {
 
   // кроме статуса "ВСЕ" (обработать это)
   const filterVotings = useMemo(
-    () => votings.filter(voting => {
-      let now = new Date().getTime();
-      let votingStatus = now >= voting.startDateTime.getTime() ? now <= voting.endDateTime.getTime() ? 
-        Status.Active : Status.Finished : Status.Before;
-      return voting.name === name && votingStatus === status;
-    }), 
+    () => 
+    // название и статус пустые
+    name.length === 0 && (status.length === 0 || status === "Все") ? votings :
+    name.length === 0 && (status.length !== 0 && status !== "Все") ? 
+      votings.filter(voting => {
+        let now = new Date().getTime();
+        let votingStatus = now >= voting.startDateTime.getTime() ? now <= voting.endDateTime.getTime() ? 
+          Status.Active : Status.Finished : Status.Before;
+        return votingStatus === status;
+      }) :
+    name.length !== 0 && (status.length === 0 || status === "Все") ?
+      votings.filter(voting => voting.name.includes(name)) :
+    name.length !== 0 && (status.length !== 0 && status !== "Все") ?
+      votings.filter(voting => {
+        let now = new Date().getTime();
+        let votingStatus = now >= voting.startDateTime.getTime() ? now <= voting.endDateTime.getTime() ? 
+          Status.Active : Status.Finished : Status.Before;
+        return voting.name.includes(name) && votingStatus === status;
+      })
+    : votings, 
     [name, status]);
 
   return (
@@ -136,7 +150,7 @@ export const MainPage: FC<unknown> = () => {
         </Grid>
       </Grid>
       <Grid container rowSpacing={4} columnSpacing={2}>
-        {renderVotingCards(votings)}
+        {renderVotingCards(filterVotings)}
       </Grid>
     </Page>
   );
