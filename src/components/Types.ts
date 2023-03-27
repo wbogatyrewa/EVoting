@@ -8,3 +8,11 @@ export interface Answer {
   label: string;
   result?: number;
 }
+
+export interface Voting {
+  name: string;
+  startDateTime?: Date;
+  endDateTime?: Date;
+  address?: string;
+  answers?: Answer[];
+}
