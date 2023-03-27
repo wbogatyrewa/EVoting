@@ -1,5 +1,5 @@
 import { Grid, InputAdornment, SelectChangeEvent } from "@mui/material";
-import React, { FC, useMemo, useState } from "react";
+import React, { FC, useEffect, useMemo, useState } from "react";
 import type { RootState } from "../../../app/store";
 import { useSelector, useDispatch } from "react-redux";
 import { Field } from "../../inputs/Field";
@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { CustomIconButton } from "../../buttons/CustomIconButton";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Status } from "../../Types";
+import { getVotingAddresses } from "../../../scripts/getVotingAddresses";
 
 const renderVotingCards = (list: Props[]) => list.map((item) => 
   <Grid item xs={3} key={item.name} >
@@ -27,6 +28,7 @@ export const MainPage: FC<unknown> = () => {
   const account = useSelector((state: RootState) => state.account.value);
   const [name, setName] = useState<string>("");
   const [status, setStatus] = useState<string>("");
+  const [votingAddresses, setVotingAddresses] = useState<string[]>([]);
   const navigate = useNavigate();
 
   const votings: Props[] = [
@@ -88,27 +90,35 @@ export const MainPage: FC<unknown> = () => {
 
   // кроме статуса "ВСЕ" (обработать это)
   const filterVotings = useMemo(
-    () => 
-    // название и статус пустые
-    name.length === 0 && (status.length === 0 || status === "Все") ? votings :
-    name.length === 0 && (status.length !== 0 && status !== "Все") ? 
-      votings.filter(voting => {
-        let now = new Date().getTime();
-        let votingStatus = now >= voting.startDateTime.getTime() ? now <= voting.endDateTime.getTime() ? 
-          Status.Active : Status.Finished : Status.Before;
-        return votingStatus === status;
-      }) :
-    name.length !== 0 && (status.length === 0 || status === "Все") ?
-      votings.filter(voting => voting.name.includes(name)) :
-    name.length !== 0 && (status.length !== 0 && status !== "Все") ?
-      votings.filter(voting => {
-        let now = new Date().getTime();
-        let votingStatus = now >= voting.startDateTime.getTime() ? now <= voting.endDateTime.getTime() ? 
-          Status.Active : Status.Finished : Status.Before;
-        return voting.name.includes(name) && votingStatus === status;
-      })
-    : votings, 
-    [name, status]);
+  () => 
+  // название и статус пустые
+  name.length === 0 && (status.length === 0 || status === "Все") ? votings :
+  name.length === 0 && (status.length !== 0 && status !== "Все") ? 
+    votings.filter(voting => {
+      let now = new Date().getTime();
+      let votingStatus = now >= voting.startDateTime.getTime() ? now <= voting.endDateTime.getTime() ? 
+        Status.Active : Status.Finished : Status.Before;
+      return votingStatus === status;
+    }) :
+  name.length !== 0 && (status.length === 0 || status === "Все") ?
+    votings.filter(voting => voting.name.includes(name)) :
+  name.length !== 0 && (status.length !== 0 && status !== "Все") ?
+    votings.filter(voting => {
+      let now = new Date().getTime();
+      let votingStatus = now >= voting.startDateTime.getTime() ? now <= voting.endDateTime.getTime() ? 
+        Status.Active : Status.Finished : Status.Before;
+      return voting.name.includes(name) && votingStatus === status;
+    })
+  : votings, 
+  [name, status]);
+  
+  useEffect(() => {
+    const getAddresses = async () => {
+      let addresses = await getVotingAddresses();
+      setVotingAddresses(addresses);
+    };
+    getAddresses();
+  }, []);
 
   return (
     <Page 
