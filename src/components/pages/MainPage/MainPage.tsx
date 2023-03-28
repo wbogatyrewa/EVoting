@@ -6,15 +6,15 @@ import { Field } from "../../inputs/Field";
 import { Page } from "../Page";
 import SearchIcon from '@mui/icons-material/Search';
 import { DropdownMenu } from "../../inputs/DropdownMenu";
-import { Props, VotingCard } from "../../cards/VotingCard/VotingCard";
+import { VotingCard } from "../../cards/VotingCard/VotingCard";
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
 import { CustomIconButton } from "../../buttons/CustomIconButton";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { Status } from "../../Types";
-import { getVotingAddresses } from "../../../scripts/getVotingAddresses";
+import { Status, Voting } from "../../Types";
+import { getVoting } from "../../../scripts/getVoting";
 
-const renderVotingCards = (list: Props[]) => list.map((item) => 
+const renderVotingCards = (list: Voting[]) => list.map((item) => 
   <Grid item xs={3} key={item.name} >
     <VotingCard 
       name={item.name} 
@@ -28,51 +28,8 @@ export const MainPage: FC<unknown> = () => {
   const account = useSelector((state: RootState) => state.account.value);
   const [name, setName] = useState<string>("");
   const [status, setStatus] = useState<string>("");
-  const [votingAddresses, setVotingAddresses] = useState<string[]>([]);
+  const [votingList, setVotingList] = useState<Voting[]>([]);
   const navigate = useNavigate();
-
-  const votings: Props[] = [
-    {
-      name: "Чизбургер или чикенбургер?",
-      startDateTime: new Date('March 1, 2023 03:24:00'),
-      endDateTime: new Date('March 31, 2023 03:24:00')
-    },
-    {
-      name: "Чизбургер или чикенбургер?",
-      startDateTime: new Date('March 1, 2023 03:24:00'),
-      endDateTime: new Date('March 5, 2023 03:24:00')
-    },
-    {
-      name: "Чизбургер или чикенбургер?",
-      startDateTime: new Date('March 30, 2023 03:24:00'),
-      endDateTime: new Date('March 31, 2023 03:24:00')
-    },
-    {
-      name: "Чизбургер или чикенбургер?",
-      startDateTime: new Date('March 1, 2023 03:24:00'),
-      endDateTime: new Date('March 31, 2023 03:24:00')
-    },
-    {
-      name: "Чизбургер или чикенбургер?",
-      startDateTime: new Date('March 1, 2023 03:24:00'),
-      endDateTime: new Date('March 31, 2023 03:24:00')
-    },
-    {
-      name: "Чизбургер или чикенбургер?",
-      startDateTime: new Date('March 1, 2023 03:24:00'),
-      endDateTime: new Date('March 5, 2023 03:24:00')
-    },
-    {
-      name: "Чизбургер или чикенбургер?",
-      startDateTime: new Date('March 30, 2023 03:24:00'),
-      endDateTime: new Date('March 31, 2023 03:24:00')
-    },
-    {
-      name: "Чизбургер или чикенбургер?",
-      startDateTime: new Date('March 1, 2023 03:24:00'),
-      endDateTime: new Date('March 31, 2023 03:24:00')
-    },
-  ]
   
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -88,36 +45,39 @@ export const MainPage: FC<unknown> = () => {
 
   const handleClearName = () => setName("");
 
-  // кроме статуса "ВСЕ" (обработать это)
   const filterVotings = useMemo(
   () => 
   // название и статус пустые
-  name.length === 0 && (status.length === 0 || status === "Все") ? votings :
+  name.length === 0 && (status.length === 0 || status === "Все") ? votingList :
   name.length === 0 && (status.length !== 0 && status !== "Все") ? 
-    votings.filter(voting => {
+    votingList.filter(voting => {
       let now = new Date().getTime();
       let votingStatus = now >= voting.startDateTime.getTime() ? now <= voting.endDateTime.getTime() ? 
         Status.Active : Status.Finished : Status.Before;
       return votingStatus === status;
     }) :
   name.length !== 0 && (status.length === 0 || status === "Все") ?
-    votings.filter(voting => voting.name.includes(name)) :
+    votingList.filter(voting => voting.name.includes(name)) :
   name.length !== 0 && (status.length !== 0 && status !== "Все") ?
-    votings.filter(voting => {
+    votingList.filter(voting => {
       let now = new Date().getTime();
       let votingStatus = now >= voting.startDateTime.getTime() ? now <= voting.endDateTime.getTime() ? 
         Status.Active : Status.Finished : Status.Before;
       return voting.name.includes(name) && votingStatus === status;
     })
-  : votings, 
+  : votingList, 
   [name, status]);
   
   useEffect(() => {
-    const getAddresses = async () => {
-      let addresses = await getVotingAddresses();
-      setVotingAddresses(addresses);
-    };
-    getAddresses();
+    const fetch = async () => {
+      let getVotings = getVoting();
+      let fetchVoting: Voting[] = [];
+      for (let i = 0; i < getVoting.length; i++) {
+        fetchVoting.push(await getVotings[i].then(value => value));
+      }
+      setVotingList(fetchVoting);
+    }
+    fetch();
   }, []);
 
   return (
