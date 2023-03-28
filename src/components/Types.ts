@@ -7,12 +7,14 @@ export enum Status {
 export interface Answer {
   label: string;
   result?: number;
+  address?: string;
 }
 
 export interface Voting {
   name: string;
-  startDateTime?: Date;
-  endDateTime?: Date;
+  startDateTime: Date;
+  endDateTime: Date;
   address?: string;
   answers?: Answer[];
+  voters?: string[];
 }
