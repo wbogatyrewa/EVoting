@@ -1,4 +1,4 @@
-import { Grid, InputAdornment, SelectChangeEvent, Typography } from "@mui/material";
+import { Grid, InputAdornment, SelectChangeEvent } from "@mui/material";
 import React, { FC, useEffect, useMemo, useState } from "react";
 import type { RootState } from "../../../app/store";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,21 +8,24 @@ import SearchIcon from '@mui/icons-material/Search';
 import { DropdownMenu } from "../../inputs/DropdownMenu";
 import { VotingCard } from "../../cards/VotingCard/VotingCard";
 import AddIcon from '@mui/icons-material/Add';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CustomIconButton } from "../../buttons/CustomIconButton";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Status, Voting } from "../../Types";
 import { getVotingList } from "../../../scripts/getVotingList";
 import { Loader } from "../../Loader";
 import { setVotingList } from "../../../features/votingListSlice";
+import { checkAccount } from "../../../scripts/checkAccount";
 
-const renderVotingCards = (list: Voting[]) => list.map((item) => 
-  <Grid item xs={3} key={item.address} >
-    <VotingCard 
-      name={item.name} 
-      startDateTime={new Date(item.startDateTime)} 
-      endDateTime={new Date(item.endDateTime)} 
-    />
+const renderVotingCards = (list: Voting[]) => list.map((item) =>
+  <Grid item xs={3} key={item.address}>
+    <Link to={`/voting/${item.address}`} style={{textDecoration: "none",}}>
+        <VotingCard 
+          name={item.name} 
+          startDateTime={new Date(item.startDateTime)} 
+          endDateTime={new Date(item.endDateTime)} 
+        />
+    </Link>
   </Grid>
 );
 
@@ -77,7 +80,7 @@ export const MainPage: FC<unknown> = () => {
   return (
     <Page 
       title="Голосования" 
-      account={account} 
+      voted={account ? true : false} 
       buttonChildren="Создать голосование" 
       buttonIcon={<AddIcon />}
       handleClick={handleCreate}>

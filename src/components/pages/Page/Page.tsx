@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 export interface PageProps {
   title: React.ReactNode;
   closed?: boolean;
-  account?: string;
+  voted?: boolean;
   handleClick?: () => void;
   buttonChildren?: React.ReactNode;
   buttonIcon?: React.ReactNode;
@@ -18,7 +18,7 @@ export interface PageProps {
 
 export const Page: FC<PageProps> = ({ 
         title, closed = false, disabledBtn = false,
-        account, handleClick = () => {}, buttonChildren, buttonIcon, children }: PageProps) => {
+        voted = false, handleClick = () => {}, buttonChildren, buttonIcon, children }: PageProps) => {
 
   const navigate = useNavigate();
 
@@ -29,11 +29,11 @@ export const Page: FC<PageProps> = ({
   return (
     <Box>
       <Grid container spacing={2}>
-        <Grid item xs={account && closed ? 8 : account ? 9 : 11}>
+        <Grid item xs={voted && closed ? 8 : voted ? 9 : 11}>
           <Typography variant="h4" mb={3}>{title}</Typography>
         </Grid>
         {
-          account ?
+          voted ?
           <Grid item xs={closed ? 2 : 3}>
             <CustomButton 
               variant="contained" 

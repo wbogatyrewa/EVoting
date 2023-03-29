@@ -16,17 +16,12 @@ export const App: React.FC<unknown> = () => {
 
   const dispatch = useDispatch();
 
-  const handleLogin = async () => {
-    let user = await login();
-    dispatch(setAccount(user));
+  const handleLogin = () => {
+    login().then(user => dispatch(setAccount(user)));
   };
 
   useEffect(() => {
-    const check = async () => {
-      let user = await checkAccount();
-      dispatch(setAccount(user));
-    };
-    check();
+    checkAccount().then((user) => dispatch(setAccount(user)));
   }, []);
 
   return (

@@ -14,7 +14,7 @@ export interface Voting {
   name: string;
   startDateTime: Date;
   endDateTime: Date;
-  address?: string;
-  answers?: Answer[];
-  voters?: string[];
+  address: string;
+  answers: Answer[];
+  voters: string[];
 }
