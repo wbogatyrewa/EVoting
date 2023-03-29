@@ -8,26 +8,26 @@ import SearchIcon from '@mui/icons-material/Search';
 import { DropdownMenu } from "../../inputs/DropdownMenu";
 import { VotingCard } from "../../cards/VotingCard/VotingCard";
 import AddIcon from '@mui/icons-material/Add';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { CustomIconButton } from "../../buttons/CustomIconButton";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Status, Voting } from "../../Types";
 import { getVotingList } from "../../../scripts/getVotingList";
 import { Loader } from "../../Loader";
 import { setVotingList } from "../../../features/votingListSlice";
-import { checkAccount } from "../../../scripts/checkAccount";
 
-const renderVotingCards = (list: Voting[]) => list.map((item) =>
-  <Grid item xs={3} key={item.address}>
-    <Link to={`/voting/${item.address}`} style={{textDecoration: "none",}}>
-        <VotingCard 
-          name={item.name} 
-          startDateTime={new Date(item.startDateTime)} 
-          endDateTime={new Date(item.endDateTime)} 
-        />
-    </Link>
-  </Grid>
-);
+const renderVotingCards = (list: Voting[], navigate: any) => list.map((item) => {
+  const handleOpenVoting = () => navigate(`/voting/${item.address}`);
+  return (
+    <Grid item xs={3} key={item.address} onClick={handleOpenVoting}>
+      <VotingCard 
+        name={item.name} 
+        startDateTime={new Date(item.startDateTime)} 
+        endDateTime={new Date(item.endDateTime)} 
+      />
+    </Grid>
+  );
+});
 
 export const MainPage: FC<unknown> = () => {
   const account = useSelector((state: RootState) => state.account.value);
@@ -119,7 +119,7 @@ export const MainPage: FC<unknown> = () => {
       <Grid container rowSpacing={4} columnSpacing={2}>
         {
           votingList.length === 0 ? <Loader />
-          : renderVotingCards(filteredVotingList)
+          : renderVotingCards(filteredVotingList, navigate)
         }
       </Grid>
     </Page>
