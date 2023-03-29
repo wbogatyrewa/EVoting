@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Grid, InputAdornment, SelectChangeEvent, Typography } from "@mui/material";
+import { Grid, InputAdornment, SelectChangeEvent, Typography } from "@mui/material";
 import React, { FC, useEffect, useMemo, useState } from "react";
 import type { RootState } from "../../../app/store";
 import { useSelector, useDispatch } from "react-redux";
@@ -14,6 +14,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Status, Voting } from "../../Types";
 import { getVotingList } from "../../../scripts/getVotingList";
 import { Loader } from "../../Loader";
+import { setVotingList } from "../../../features/votingListSlice";
 
 const renderVotingCards = (list: Voting[]) => list.map((item) => 
   <Grid item xs={3} key={item.address} >
@@ -27,10 +28,12 @@ const renderVotingCards = (list: Voting[]) => list.map((item) =>
 
 export const MainPage: FC<unknown> = () => {
   const account = useSelector((state: RootState) => state.account.value);
+  const votingList = useSelector((state: RootState) => state.votingList.value);
   const [name, setName] = useState<string>("");
   const [status, setStatus] = useState<string>("");
-  const [votingList, setVotingList] = useState<Voting[]>([]);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -47,7 +50,7 @@ export const MainPage: FC<unknown> = () => {
   const handleClearName = () => setName("");
 
   useEffect(() => {
-    getVotingList().then((list: Voting[]) => setVotingList(list));
+    getVotingList().then((list: Voting[]) => dispatch(setVotingList(list)));
   }, []);
 
   const filteredVotingList = useMemo(() => 

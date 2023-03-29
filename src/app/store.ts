@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import accountReducer from "../features/accountSlice";
+import votingListReducer from "../features/votingListSlice";
 
 export const store = configureStore({
   reducer: {
     account: accountReducer,
+    votingList: votingListReducer,
   },
 });
 
