@@ -16,7 +16,7 @@ import { getVotingList } from "../../../scripts/getVotingList";
 import { Loader } from "../../Loader";
 
 const renderVotingCards = (list: Voting[]) => list.map((item) => 
-  <Grid item xs={3} key={item.name} >
+  <Grid item xs={3} key={item.address} >
     <VotingCard 
       name={item.name} 
       startDateTime={new Date(item.startDateTime)} 
@@ -46,9 +46,11 @@ export const MainPage: FC<unknown> = () => {
 
   const handleClearName = () => setName("");
 
-  const filteredVotingList = useMemo(
-  () => 
-  // название и статус пустые
+  useEffect(() => {
+    getVotingList().then((list: Voting[]) => setVotingList(list));
+  }, []);
+
+  const filteredVotingList = useMemo(() => 
   name.length === 0 && (status.length === 0 || status === "Все") ? votingList :
   name.length === 0 && (status.length !== 0 && status !== "Все") ? 
     votingList.filter(voting => {
@@ -67,11 +69,7 @@ export const MainPage: FC<unknown> = () => {
       return voting.name.includes(name) && votingStatus === status;
     })
   : votingList, 
-  [name, status]);
-  
-  useEffect(() => {
-    getVotingList().then((list: Voting[]) => setVotingList(list));
-  }, []);
+  [name, status, votingList]);
 
   return (
     <Page 
@@ -115,7 +113,7 @@ export const MainPage: FC<unknown> = () => {
       <Grid container rowSpacing={4} columnSpacing={2}>
         {
           votingList.length === 0 ? <Loader />
-          : renderVotingCards(votingList)
+          : renderVotingCards(filteredVotingList)
         }
       </Grid>
     </Page>
