@@ -34,6 +34,7 @@ const renderRadioList = (radioList: Array<Answer>, disabled?: boolean) => {
   return (
     radioList.map(item =>
       <FormControlLabel 
+        key={item.label}
         value={item.label} 
         control={<Radio />} 
         disabled={disabled ? true : item.result ? true : false}
