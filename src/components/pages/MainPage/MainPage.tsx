@@ -55,7 +55,7 @@ export const MainPage: FC<unknown> = () => {
   name.length === 0 && (status.length !== 0 && status !== "Все") ? 
     votingList.filter(voting => {
       let now = new Date().getTime();
-      let votingStatus = now >= voting.startDateTime.getTime() ? now <= voting.endDateTime.getTime() ? 
+      let votingStatus = now >= new Date(voting.startDateTime).getTime() ? now <= new Date(voting.endDateTime).getTime() ? 
         Status.Active : Status.Finished : Status.Before;
       return votingStatus === status;
     }) :
@@ -64,7 +64,7 @@ export const MainPage: FC<unknown> = () => {
   name.length !== 0 && (status.length !== 0 && status !== "Все") ?
     votingList.filter(voting => {
       let now = new Date().getTime();
-      let votingStatus = now >= voting.startDateTime.getTime() ? now <= voting.endDateTime.getTime() ? 
+      let votingStatus = now >= new Date(voting.startDateTime).getTime() ? now <= new Date(voting.endDateTime).getTime() ? 
         Status.Active : Status.Finished : Status.Before;
       return voting.name.includes(name) && votingStatus === status;
     })
