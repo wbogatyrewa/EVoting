@@ -1,4 +1,4 @@
-import { Grid, InputAdornment, SelectChangeEvent } from "@mui/material";
+import { Box, CircularProgress, Grid, InputAdornment, SelectChangeEvent, Typography } from "@mui/material";
 import React, { FC, useEffect, useMemo, useState } from "react";
 import type { RootState } from "../../../app/store";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,14 +12,15 @@ import { useNavigate } from "react-router-dom";
 import { CustomIconButton } from "../../buttons/CustomIconButton";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Status, Voting } from "../../Types";
-import { getVoting } from "../../../scripts/getVoting";
+import { getVotingList } from "../../../scripts/getVotingList";
+import { Loader } from "../../Loader";
 
 const renderVotingCards = (list: Voting[]) => list.map((item) => 
   <Grid item xs={3} key={item.name} >
     <VotingCard 
       name={item.name} 
-      startDateTime={item.startDateTime} 
-      endDateTime={item.endDateTime} 
+      startDateTime={new Date(item.startDateTime)} 
+      endDateTime={new Date(item.endDateTime)} 
     />
   </Grid>
 );
@@ -45,7 +46,7 @@ export const MainPage: FC<unknown> = () => {
 
   const handleClearName = () => setName("");
 
-  const filterVotings = useMemo(
+  const filteredVotingList = useMemo(
   () => 
   // название и статус пустые
   name.length === 0 && (status.length === 0 || status === "Все") ? votingList :
@@ -69,15 +70,7 @@ export const MainPage: FC<unknown> = () => {
   [name, status]);
   
   useEffect(() => {
-    const fetch = async () => {
-      let getVotings = getVoting();
-      let fetchVoting: Voting[] = [];
-      for (let i = 0; i < getVoting.length; i++) {
-        fetchVoting.push(await getVotings[i].then(value => value));
-      }
-      setVotingList(fetchVoting);
-    }
-    fetch();
+    getVotingList().then((list: Voting[]) => setVotingList(list));
   }, []);
 
   return (
@@ -120,7 +113,10 @@ export const MainPage: FC<unknown> = () => {
         </Grid>
       </Grid>
       <Grid container rowSpacing={4} columnSpacing={2}>
-        {renderVotingCards(filterVotings)}
+        {
+          votingList.length === 0 ? <Loader />
+          : renderVotingCards(votingList)
+        }
       </Grid>
     </Page>
   );
