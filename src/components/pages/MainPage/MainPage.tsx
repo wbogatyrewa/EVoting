@@ -15,6 +15,7 @@ import { Status, Voting } from "../../Types";
 import { getVotingList } from "../../../scripts/getVotingList";
 import { Loader } from "../../Loader";
 import { setVotingList } from "../../../features/votingListSlice";
+import { setAbiToFile } from "../../../scripts/setAbiToFile";
 
 const renderVotingCards = (list: Voting[], navigate: any) => list.map((item) => {
   const handleOpenVoting = () => navigate(`/voting/${item.address}`);
@@ -54,6 +55,10 @@ export const MainPage: FC<unknown> = () => {
 
   useEffect(() => {
     getVotingList().then((list: Voting[]) => dispatch(setVotingList(list)));
+    // setAbiToFile(
+    //   "0xB9cB0148b3D4882aCee783B30E9dd56855ea61f8",
+    //   JSON.stringify(abi)
+    // ).then(address => console.log(address));
   }, []);
 
   const filteredVotingList = useMemo(() => 
