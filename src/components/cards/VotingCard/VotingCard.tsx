@@ -35,8 +35,8 @@ export const VotingCard: FC<Props> = ({ name, startDateTime, endDateTime }: Prop
 
   return (
     <ThemeProvider theme={theme}>
-      <Card elevation={3} sx={{ maxWidth: 260, borderRadius: 4, background: 'linear-gradient(0deg, rgba(103, 80, 164, 0.08), rgba(103, 80, 164, 0.08)), #FFFBFE'}}>
-        <CardActionArea>
+      <Card elevation={3} sx={{ height: '100%', maxWidth: 260, borderRadius: 4, background: 'linear-gradient(0deg, rgba(103, 80, 164, 0.08), rgba(103, 80, 164, 0.08)), #FFFBFE'}}>
+        <CardActionArea sx={{ height: '100%' }}>
           <CardContent>
             <Typography variant="subtitle1" color="text.primary" gutterBottom>
               {name}
