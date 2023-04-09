@@ -10,6 +10,7 @@ import { RadioList } from "../../RadioList";
 import { TransactionLink } from "../../TransactionLink";
 import { Status, Voting } from "../../Types";
 import { Page } from "../Page";
+import { getAbi } from "../../../scripts/getAbi";
 
 export const AboutVotingPage: FC<unknown> = () => {
   const params = useParams();
@@ -19,6 +20,7 @@ export const AboutVotingPage: FC<unknown> = () => {
   const votingList = useSelector((state: RootState) => state.votingList.value);
   const voting = votingList.find(element => element.address === address) || votingList[0];
   const [status, setStatus] = useState<Status>(Status.Before);
+  const [abi, setAbi] = useState<any>({});
   let voted = -1;
 
   useEffect(() => {
@@ -34,6 +36,10 @@ export const AboutVotingPage: FC<unknown> = () => {
     voted = voting.voters.findIndex(element => {
       return element.toLowerCase() === account.toLowerCase();
     });
+
+    if (voted && status === Status.Active) {
+      getAbi(voting.address).then((abi) => setAbi(abi));
+    }
   }, []);
 
   const isVoted = false; // проверять в смарте (проголосовал ли аккаунт)
