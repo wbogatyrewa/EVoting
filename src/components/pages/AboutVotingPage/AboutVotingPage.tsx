@@ -8,9 +8,10 @@ import { getVotingList } from "../../../scripts/getVotingList";
 import { AboutVotingCard } from "../../cards/AboutVotingCard";
 import { RadioList } from "../../RadioList";
 import { TransactionLink } from "../../TransactionLink";
-import { Status, Voting } from "../../Types";
+import { Answer, Status, Voting } from "../../Types";
 import { Page } from "../Page";
 import { getAbi } from "../../../scripts/getAbi";
+import { vote } from "../../../scripts/vote";
 
 export const AboutVotingPage: FC<unknown> = () => {
   const params = useParams();
@@ -21,12 +22,31 @@ export const AboutVotingPage: FC<unknown> = () => {
   const voting = votingList.find(element => element.address === address) || votingList[0];
   const [status, setStatus] = useState<Status>(Status.Before);
   const [abi, setAbi] = useState<any>({});
+  const [answerLabel, setAnswerLabel] = useState<string>();
+  const [isVoted, setIsVoted] = useState<boolean>(false); // проверять в смарте (проголосовал ли аккаунт)
+
   let voted = -1;
 
+  const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAnswerLabel((event.target as HTMLInputElement).value);
+  };
+
+  const handleChangeVote = () => {
+    // определить адрес выбранного варианта ответа
+    let answerAddress = voting.answers.find((element) => element.label === answerLabel)?.address || "";
+    
+    // вызвать метод vote
+    vote(voting.address, abi, answerAddress).then(res => {
+      // запоминать выбор юзера??
+      setIsVoted(true); // юзер проголосовал
+    });
+
+    // как то оплатить комиссию через другой кошелек
+
+
+  };
+
   useEffect(() => {
-    // if (votingList.length === 0) {
-    //   getVotingList().then((list: Voting[]) => dispatch(setVotingList(list)));
-    // }
     if (voting !== undefined) {
       let now = new Date().getTime();
       setStatus(now >= new Date(voting.startDateTime).getTime() ? now <= new Date(voting.endDateTime).getTime() ? 
@@ -37,14 +57,10 @@ export const AboutVotingPage: FC<unknown> = () => {
       return element.toLowerCase() === account.toLowerCase();
     });
 
-    if (voted ) {
+    if (voted && status === Status.Active) {
       getAbi(voting.address).then((abi) => setAbi(abi));
     }
   }, []);
-
-  useEffect(() => console.log(abi), [abi]);
-
-  const isVoted = false; // проверять в смарте (проголосовал ли аккаунт)
   
   return (
     <Page 
@@ -52,6 +68,7 @@ export const AboutVotingPage: FC<unknown> = () => {
       closed 
       voted={account && voted ? true : false}
       buttonChildren="Проголосовать"
+      handleClick={handleChangeVote}
       disabledBtn={isVoted || status === Status.Before || status === Status.Finished}>
       <Grid container spacing={2}>
         <Grid item xs={4}>
@@ -63,7 +80,11 @@ export const AboutVotingPage: FC<unknown> = () => {
             />
           </Box>
           <Box>
-            <RadioList label="Варианты ответов" radioList={voting.answers} disabled={isVoted || status === Status.Before || status === Status.Finished ? true : account ? false : true} />
+            <RadioList 
+              label="Варианты ответов" 
+              radioList={voting.answers} disabled={isVoted || status === Status.Before || status === Status.Finished ? true : account ? false : true}
+              value={answerLabel}
+              onChange={handleChangeAnswer} />
           </Box>
         </Grid>
         <Grid item xs={4}></Grid>
