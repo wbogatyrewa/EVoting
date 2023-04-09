@@ -5,6 +5,8 @@ import { Answer } from "../Types";
 export interface Props {
   label?: string;
   radioList: Array<Answer>;
+  value?: string;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   props?: RadioGroupProps;
 }
@@ -51,7 +53,7 @@ const renderRadioList = (radioList: Array<Answer>, disabled?: boolean) => {
 
     
 
-export const RadioList: FC<Props> = ({ label, radioList = [], disabled = false, props }: Props) => {
+export const RadioList: FC<Props> = ({ label, radioList = [], value, onChange, disabled = false, props }: Props) => {
   return (
     <ThemeProvider theme={theme}>
       <FormControl fullWidth>
@@ -61,6 +63,8 @@ export const RadioList: FC<Props> = ({ label, radioList = [], disabled = false, 
         <RadioGroup
           aria-labelledby="radio-list"
           name="radio-list"
+          value={value}
+          onChange={onChange}
           {...props}
         >
           {
