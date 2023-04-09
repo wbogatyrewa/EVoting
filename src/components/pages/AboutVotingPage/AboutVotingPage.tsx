@@ -37,10 +37,12 @@ export const AboutVotingPage: FC<unknown> = () => {
       return element.toLowerCase() === account.toLowerCase();
     });
 
-    if (voted && status === Status.Active) {
+    if (voted ) {
       getAbi(voting.address).then((abi) => setAbi(abi));
     }
   }, []);
+
+  useEffect(() => console.log(abi), [abi]);
 
   const isVoted = false; // проверять в смарте (проголосовал ли аккаунт)
   
