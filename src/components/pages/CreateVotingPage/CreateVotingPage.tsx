@@ -11,6 +11,7 @@ import { createVoting } from "../../../scripts/createVoting";
 import dayjs, { Dayjs } from 'dayjs';
 import { signCreateVoting } from "../../../scripts/signCreateVoting";
 import { Loader } from "../../Loader";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme({  
   palette: {
@@ -65,6 +66,7 @@ export const CreateVotingPage: FC<unknown> = () => {
   const [startDateTime, setStartDateTime] = useState<Dayjs | null>(dayjs('2023-05-01T08:00'));
   const [endDateTime, setEndDateTime] = useState<Dayjs | null>(dayjs('2023-05-02T00:00'));
   const [showLoader, setShowLoader] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -104,9 +106,13 @@ export const CreateVotingPage: FC<unknown> = () => {
           endDateTime: endDateTime, 
           voters: votersArr,
           proposalsNames: answers
-        }).then(address => {
+        }).then(res => {
           setShowLoader(false);
-          console.log(address);
+          navigate("/");
+          console.log(res);
+        }).catch(res => {
+          setShowLoader(false);
+          navigate("/");
         });
       }
     });    
