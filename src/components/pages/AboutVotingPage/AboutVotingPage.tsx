@@ -36,7 +36,7 @@ export const AboutVotingPage: FC<unknown> = () => {
     let answerAddress = voting.answers.find((element) => element.label === answerLabel)?.address || "";
     
     // вызвать метод vote
-    vote(voting.address, abi, answerAddress).then(res => {
+    vote(voting.address, answerAddress).then(res => {
       // запоминать выбор юзера??
       setIsVoted(true); // юзер проголосовал
     });
@@ -56,10 +56,6 @@ export const AboutVotingPage: FC<unknown> = () => {
     voted = voting.voters.findIndex(element => {
       return element.toLowerCase() === account.toLowerCase();
     });
-
-    if (voted && status === Status.Active) {
-      getAbi(voting.address).then((abi) => setAbi(abi));
-    }
   }, []);
   
   return (
