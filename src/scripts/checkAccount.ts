@@ -5,7 +5,7 @@ export const checkAccount = async () => {
     await (window as any).ethereum
     .request({method: 'eth_accounts'})
     .then((res: string[]) => {
-      if ((res.length !== 0) && ((window as any).ethereum.networkVersion == 1)) {
+      if (res.length !== 0) {
         account = res[0];
       }
     });
