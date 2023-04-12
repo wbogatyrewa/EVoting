@@ -8,14 +8,13 @@ import SearchIcon from '@mui/icons-material/Search';
 import { DropdownMenu } from "../../inputs/DropdownMenu";
 import { VotingCard } from "../../cards/VotingCard/VotingCard";
 import AddIcon from '@mui/icons-material/Add';
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CustomIconButton } from "../../buttons/CustomIconButton";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Status, Voting } from "../../Types";
 import { getVotingList } from "../../../scripts/getVotingList";
 import { Loader } from "../../Loader";
 import { setVotingList } from "../../../features/votingListSlice";
-import { setAbiToFile } from "../../../scripts/setAbiToFile";
 
 const renderVotingCards = (list: Voting[], navigate: any) => list.map((item) => {
   const handleOpenVoting = () => navigate(`/voting/${item.address}`);
