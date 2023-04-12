@@ -10,6 +10,7 @@ import { DateTimeField } from "../../inputs/DateTimeField";
 import { createVoting } from "../../../scripts/createVoting";
 import dayjs, { Dayjs } from 'dayjs';
 import { signCreateVoting } from "../../../scripts/signCreateVoting";
+import { Loader } from "../../Loader";
 
 const theme = createTheme({  
   palette: {
@@ -63,6 +64,7 @@ export const CreateVotingPage: FC<unknown> = () => {
   const [answers, setAnswers] = useState<string[]>(["", ""]);
   const [startDateTime, setStartDateTime] = useState<Dayjs | null>(dayjs('2023-05-01T08:00'));
   const [endDateTime, setEndDateTime] = useState<Dayjs | null>(dayjs('2023-05-02T00:00'));
+  const [showLoader, setShowLoader] = useState<boolean>(false);
 
   const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -86,6 +88,7 @@ export const CreateVotingPage: FC<unknown> = () => {
 
 
   const handleClickCreateVoting = () => {
+    setShowLoader(true);
     let votersArr = voters.split(", ");
     signCreateVoting({
       name: name, 
@@ -101,17 +104,38 @@ export const CreateVotingPage: FC<unknown> = () => {
           endDateTime: endDateTime, 
           voters: votersArr,
           proposalsNames: answers
-        }).then(address => console.log(address));
+        }).then(address => {
+          setShowLoader(false);
+          console.log(address);
+        });
       }
     });    
   }
 
-  useEffect(() => console.log(startDateTime), [startDateTime]);
-
   return (
     <ThemeProvider theme={theme}>
       <Page title="Создание голосования" closed>
-        <Grid container spacing={10}>
+        <Grid container spacing={10} position={'relative'}>
+          {
+            showLoader ? 
+            <Box sx={[
+              {
+                position: 'absolute',
+                zIndex: 2,
+                background: 'rgba(255, 255, 255, 0.5)',
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }
+            ]}>
+              <Loader />
+            </Box>
+            : null
+          }
           <Grid item xs={6}>
             <Box mb={2}>
               <Typography variant="subtitle1" color="text.primary" gutterBottom>Название</Typography>

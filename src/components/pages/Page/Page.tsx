@@ -28,7 +28,7 @@ export const Page: FC<PageProps> = ({
 
   return (
     <Box>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} position={'relative'} zIndex={5}>
         <Grid item xs={voted && closed ? 8 : voted ? 9 : 11}>
           <Typography variant="h4" mb={3}>{title}</Typography>
         </Grid>
