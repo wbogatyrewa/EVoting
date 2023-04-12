@@ -1,5 +1,5 @@
 import { Box, createTheme, Grid, InputAdornment, ThemeProvider, Typography } from "@mui/material";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { CustomIconButton } from "../../buttons/CustomIconButton";
 import { Field } from "../../inputs/Field";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
@@ -7,6 +7,9 @@ import { Page } from "../Page";
 import AddIcon from '@mui/icons-material/Add';
 import { CustomButton } from "../../buttons/CustomButton";
 import { DateTimeField } from "../../inputs/DateTimeField";
+import { createVoting } from "../../../scripts/createVoting";
+import dayjs, { Dayjs } from 'dayjs';
+import { signCreateVoting } from "../../../scripts/signCreateVoting";
 
 const theme = createTheme({  
   palette: {
@@ -55,37 +58,55 @@ const renderAnswerField = (answers: string[], setAnswers: React.Dispatch<React.S
 
 export const CreateVotingPage: FC<unknown> = () => {
   // добавить валидацию
-
   const [name, setName] = useState<string>("");
-  const [emails, setEmails] = useState<string>("");
-  const [addresses, setAddresses] = useState<string>("");
+  const [voters, setVoters] = useState<string>("");
   const [answers, setAnswers] = useState<string[]>(["", ""]);
+  const [startDateTime, setStartDateTime] = useState<Dayjs | null>(dayjs('2023-05-01T08:00'));
+  const [endDateTime, setEndDateTime] = useState<Dayjs | null>(dayjs('2023-05-02T00:00'));
 
   const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
-  }
+  };
 
-  const handleChangeEmails = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmails(event.target.value);
-  }
+  const handleChangeVoters = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setVoters(event.target.value);
+  };
 
-  const handleChangeAddresses = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAddresses(event.target.value);
-  }
+  const handleChangeStartDateTime = (newDate: Dayjs) => {
+    setStartDateTime(newDate);
+  };
+
+  const handleChangeEndDateTime = (newDate: Dayjs) => {
+    setEndDateTime(newDate);
+  };
 
   const handleClickAddAnswer = () => {
-    // let answer = "";
-    // const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => answer = event.target.value;
     setAnswers([...answers, ""]);
-  }
+  };
+
 
   const handleClickCreateVoting = () => {
-    // create voting
+    let votersArr = voters.split(", ");
+    signCreateVoting({
+      name: name, 
+      startDateTime: startDateTime, 
+      endDateTime: endDateTime, 
+      voters: votersArr,
+      proposalsNames: answers
+    }).then(res => {
+      if (res) {
+        createVoting({ 
+          name: name, 
+          startDateTime: startDateTime, 
+          endDateTime: endDateTime, 
+          voters: votersArr,
+          proposalsNames: answers
+        }).then(address => console.log(address));
+      }
+    });    
   }
 
-  const handleClose = () => {
-    // close - routing on main page
-  }
+  useEffect(() => console.log(startDateTime), [startDateTime]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -125,27 +146,11 @@ export const CreateVotingPage: FC<unknown> = () => {
               <Typography variant="subtitle1" color="text.primary" gutterBottom>Участники</Typography>
               <Box mb={2}>
                 <Field 
-                  label={"E-mail адреса"}
-                  helperText={"Введите список e-mail адресов"}
-                  value={emails} handleChange={handleChangeEmails} 
-                  endAdornment={
-                    emails ?
-                    <InputAdornment position="end">
-                      <CustomIconButton>
-                        <HighlightOffIcon />
-                      </CustomIconButton>
-                    </InputAdornment>
-                    : null
-                  }
-                />
-              </Box>
-              <Box mb={2}>
-                <Field 
                   label={"Адреса избирателей в блокчейне"}
                   helperText={"Введите список адресов избирателей в блокчейне"}
-                  value={addresses} handleChange={handleChangeAddresses} 
+                  value={voters} handleChange={handleChangeVoters} 
                   endAdornment={
-                    addresses ?
+                    voters ?
                     <InputAdornment position="end">
                       <CustomIconButton>
                         <HighlightOffIcon />
@@ -166,10 +171,10 @@ export const CreateVotingPage: FC<unknown> = () => {
             <Box>
               <Typography variant="subtitle1" color="text.primary">Срок голосования</Typography>
               <Box mb={1}>
-                <DateTimeField label={"Начало"} />
+                <DateTimeField label={"Начало"} value={startDateTime} onChange={handleChangeStartDateTime} />
               </Box>
               <Box mb={1}>
-                <DateTimeField label={"Окончание"} />
+                <DateTimeField label={"Окончание"} value={endDateTime} onChange={handleChangeEndDateTime} />
               </Box>
             </Box>
           </Grid>
