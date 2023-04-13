@@ -8,7 +8,7 @@ export const vote = async (votingAddress: string, answerAddress: string) => {
   if ((window as any).ethereum) {
     var web3 = new Web3(Web3.givenProvider);
     var contract = await new web3.eth.Contract(ABI as AbiItem[], votingAddress);
-    const fromAddress = (await getAccounts())[0];
+    const fromAddress = (await getAccounts());
 
     try {
       await contract.methods.vote(answerAddress).send({from: fromAddress})
