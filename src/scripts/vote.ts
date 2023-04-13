@@ -11,10 +11,13 @@ export const vote = async (votingAddress: string, answerAddress: string) => {
     const fromAddress = (await getAccounts());
 
     try {
-      await contract.methods.vote(answerAddress).send({from: fromAddress})
-      .then(function(result : any){
-        res = result;
-    });
+      await contract.methods.vote(answerAddress).send({from: fromAddress}, function(error : any, transactionHash : any) {
+        if (error != null) {
+          res = error;
+        } else {
+          res = `https://sepolia.etherscan.io/tx/${transactionHash}`;
+        }
+      });
     } catch (error) {
       res = error;
     }

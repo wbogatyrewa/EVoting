@@ -22,7 +22,8 @@ export const AboutVotingPage: FC<unknown> = () => {
   const voting = votingList.find(element => element.address === address) || votingList[0];
   const [status, setStatus] = useState<Status>(Status.Before);
   const [abi, setAbi] = useState<any>({});
-  const [answerLabel, setAnswerLabel] = useState<string>();
+  const [answerLabel, setAnswerLabel] = useState<string>("");
+  const [voteLink, setVoteLink] = useState<string>("");
   const [isVoted, setIsVoted] = useState<boolean>(false); // проверять в смарте (проголосовал ли аккаунт)
 
   let voted = -1;
@@ -37,8 +38,8 @@ export const AboutVotingPage: FC<unknown> = () => {
     
     // вызвать метод vote
     vote(voting.address, answerAddress).then(res => {
-      // запоминать выбор юзера??
       setIsVoted(true); // юзер проголосовал
+      setVoteLink(res);
     });
 
     // как то оплатить комиссию через другой кошелек
@@ -65,7 +66,7 @@ export const AboutVotingPage: FC<unknown> = () => {
       voted={account && voted ? true : false}
       buttonChildren="Проголосовать"
       handleClick={handleChangeVote}
-      disabledBtn={isVoted || status === Status.Before || status === Status.Finished}>
+      disabledBtn={isVoted || status === Status.Before || status === Status.Finished || answerLabel.length === 0 }>
       <Grid container spacing={2}>
         <Grid item xs={4}>
           <Box mb={2}>
@@ -88,7 +89,7 @@ export const AboutVotingPage: FC<unknown> = () => {
           isVoted ? 
           <Grid item xs={4}>
             <Box display="flex" gap="3px" mb="0.35em">
-              <TransactionLink link={`https://sepolia.etherscan.io/address/${voting?.address}`}>
+              <TransactionLink link={voteLink}>
                 Транзакция
               </TransactionLink>
               <Typography variant="body2" color="text.primary">
