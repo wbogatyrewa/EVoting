@@ -10,7 +10,6 @@ import { RadioList } from "../../RadioList";
 import { TransactionLink } from "../../TransactionLink";
 import { Answer, Status, Voting } from "../../Types";
 import { Page } from "../Page";
-import { getAbi } from "../../../scripts/getAbi";
 import { vote } from "../../../scripts/vote";
 
 export const AboutVotingPage: FC<unknown> = () => {

@@ -1,6 +1,7 @@
 import { createTheme, FormControl, FormControlLabel, Radio, RadioGroup, RadioGroupProps, ThemeProvider, Typography } from "@mui/material";
 import React, { FC } from "react";
 import { Answer } from "../Types";
+import { current } from "@reduxjs/toolkit";
 
 export interface Props {
   label?: string;
@@ -32,7 +33,8 @@ const theme = createTheme({
 
 const renderRadioList = (radioList: Array<Answer>, disabled?: boolean) => {
   const max = radioList.reduce((prev, current) => ((prev.result || 0) > (current.result || 0)) ? prev : current, { label: "", result: 0 });
-  
+  const votes = radioList.reduce((accumulator, current) => accumulator + (current.result || 0), 0);
+
   return (
     radioList.map(item =>
       <FormControlLabel 
@@ -40,7 +42,7 @@ const renderRadioList = (radioList: Array<Answer>, disabled?: boolean) => {
         value={item.label} 
         control={<Radio />} 
         disabled={disabled ? true : item.result ? true : false}
-        label={item.result ? `${item.label} (${item.result}%)` : item.label}
+        label={item.result ? `${item.label} (${(item.result / votes) * 100}%)` : item.label}
         sx={{
           backgroundColor: (max.label === item.label && max.result) ? 'primary.light' : 'transparent',
           ".MuiFormControlLabel-label.Mui-disabled": {
