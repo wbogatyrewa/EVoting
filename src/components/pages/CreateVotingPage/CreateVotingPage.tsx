@@ -33,7 +33,7 @@ const renderAnswerField = (answers: string[], setAnswers: React.Dispatch<React.S
     let answer = event.target.value;
     let newArray = answers.map((elem, index) => index === id ? answer : elem);
     setAnswers(newArray);
-  }
+  };
 
   return (
     answers.map((elem, index) =>
@@ -43,15 +43,6 @@ const renderAnswerField = (answers: string[], setAnswers: React.Dispatch<React.S
           label={"Вариант ответа"}
           helperText={"Введите вариант ответа"}
           value={elem} handleChange={handleChangeAnswer} 
-          endAdornment={
-            elem ? 
-            <InputAdornment position="end">
-              <CustomIconButton>
-                <HighlightOffIcon />
-              </CustomIconButton>
-            </InputAdornment>
-            : null
-          }
         />
       </Box>
     )
@@ -63,8 +54,8 @@ export const CreateVotingPage: FC<unknown> = () => {
   const [name, setName] = useState<string>("");
   const [voters, setVoters] = useState<string>("");
   const [answers, setAnswers] = useState<string[]>(["", ""]);
-  const [startDateTime, setStartDateTime] = useState<Dayjs | null>(dayjs('2023-05-01T08:00'));
-  const [endDateTime, setEndDateTime] = useState<Dayjs | null>(dayjs('2023-05-02T00:00'));
+  const [startDateTime, setStartDateTime] = useState<Dayjs | null>(dayjs());
+  const [endDateTime, setEndDateTime] = useState<Dayjs | null>(dayjs().add(1, 'day'));
   const [showLoader, setShowLoader] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -72,9 +63,17 @@ export const CreateVotingPage: FC<unknown> = () => {
     setName(event.target.value);
   };
 
+  const handleDeleteName = () => {
+    setName("");
+  }
+
   const handleChangeVoters = (event: React.ChangeEvent<HTMLInputElement>) => {
     setVoters(event.target.value);
   };
+
+  const handleDeleteVoters = () => {
+    setVoters("");
+  }
 
   const handleChangeStartDateTime = (newDate: Dayjs) => {
     setStartDateTime(newDate);
@@ -152,7 +151,7 @@ export const CreateVotingPage: FC<unknown> = () => {
                 endAdornment={
                   name ? 
                   <InputAdornment position="end">
-                    <CustomIconButton>
+                    <CustomIconButton onClick={handleDeleteName}>
                       <HighlightOffIcon />
                     </CustomIconButton>
                   </InputAdornment>
@@ -182,7 +181,7 @@ export const CreateVotingPage: FC<unknown> = () => {
                   endAdornment={
                     voters ?
                     <InputAdornment position="end">
-                      <CustomIconButton>
+                      <CustomIconButton onClick={handleDeleteVoters}>
                         <HighlightOffIcon />
                       </CustomIconButton>
                     </InputAdornment>
@@ -193,7 +192,8 @@ export const CreateVotingPage: FC<unknown> = () => {
             </Box>
             <CustomButton 
               variant="contained"
-              onClick={handleClickCreateVoting}>
+              onClick={handleClickCreateVoting}
+              disabled={!name || !voters || !answers}>
               Создать  голосование
             </CustomButton>
           </Grid>
