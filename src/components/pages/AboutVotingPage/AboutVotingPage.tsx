@@ -1,26 +1,23 @@
 import { Box, Grid, Typography } from "@mui/material";
 import React, { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../../app/store";
-import { setVotingList } from "../../../features/votingListSlice";
-import { getVotingList } from "../../../scripts/getVotingList";
 import { AboutVotingCard } from "../../cards/AboutVotingCard";
 import { RadioList } from "../../RadioList";
 import { TransactionLink } from "../../TransactionLink";
-import { Answer, Status, Voting } from "../../Types";
+import { Status } from "../../Types";
 import { Page } from "../Page";
 import { vote } from "../../../scripts/vote";
+import { checkIsVoted } from "../../../scripts/checkIsVoted";
 
 export const AboutVotingPage: FC<unknown> = () => {
   const params = useParams();
-  const dispatch = useDispatch();
   const address = params.votingAddress;
   const account = useSelector((state: RootState) => state.account.value);
   const votingList = useSelector((state: RootState) => state.votingList.value);
   const voting = votingList.find(element => element.address === address) || votingList[0];
   const [status, setStatus] = useState<Status>(Status.Before);
-  const [abi, setAbi] = useState<any>({});
   const [answerLabel, setAnswerLabel] = useState<string>("");
   const [voteLink, setVoteLink] = useState<string>("");
   const [isVoted, setIsVoted] = useState<boolean>(false); // проверять в смарте (проголосовал ли аккаунт)
@@ -35,15 +32,10 @@ export const AboutVotingPage: FC<unknown> = () => {
     // определить адрес выбранного варианта ответа
     let answerAddress = voting.answers.find((element) => element.label === answerLabel)?.address || "";
     
-    // вызвать метод vote
-    vote(voting.address, answerAddress).then(res => {
+    vote(voting.address, answerAddress).then((res: any) => {
       setIsVoted(true); // юзер проголосовал
       setVoteLink(res);
     });
-
-    // как то оплатить комиссию через другой кошелек
-
-
   };
 
   useEffect(() => {
@@ -56,6 +48,8 @@ export const AboutVotingPage: FC<unknown> = () => {
     voted = voting.voters.findIndex(element => {
       return element.toLowerCase() === account.toLowerCase();
     });
+
+    checkIsVoted(voting.address, account).then((result) => setIsVoted(result));
   }, []);
   
   return (
@@ -88,7 +82,7 @@ export const AboutVotingPage: FC<unknown> = () => {
           isVoted ? 
           <Grid item xs={4}>
             <Box display="flex" gap="3px" mb="0.35em">
-              <TransactionLink link={voteLink}>
+              <TransactionLink link={voteLink ? voteLink : `https://sepolia.etherscan.io/address/${voting.address}`}>
                 Транзакция
               </TransactionLink>
               <Typography variant="body2" color="text.primary">

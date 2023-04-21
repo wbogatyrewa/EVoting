@@ -148,6 +148,25 @@ export const ABI = [
     inputs: [
       {
         internalType: "address",
+        name: "voter",
+        type: "address",
+      },
+    ],
+    name: "isVoted",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "proposal",
         type: "address",
       },
