@@ -19,7 +19,7 @@ import { setVotingList } from "../../../features/votingListSlice";
 const renderVotingCards = (list: Voting[], navigate: any) => list.map((item) => {
   const handleOpenVoting = () => navigate(`/voting/${item.address}`);
   return (
-    <Grid item xs={3} key={item.address} onClick={handleOpenVoting}>
+    <Grid item xs={6} sm={4} md={3} key={item.address} onClick={handleOpenVoting}>
       <VotingCard 
         name={item.name} 
         startDateTime={new Date(item.startDateTime)} 
@@ -54,10 +54,6 @@ export const MainPage: FC<unknown> = () => {
 
   useEffect(() => {
     getVotingList().then((list: Voting[]) => dispatch(setVotingList(list)));
-    // setAbiToFile(
-    //   "0xB9cB0148b3D4882aCee783B30E9dd56855ea61f8",
-    //   JSON.stringify(abi)
-    // ).then(address => console.log(address));
   }, []);
 
   const filteredVotingList = useMemo(() => 
@@ -89,7 +85,7 @@ export const MainPage: FC<unknown> = () => {
       buttonIcon={<AddIcon />}
       handleClick={handleCreate}>
       <Grid container spacing={2} mb={4}>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6} md={6}>
           <Field 
             id="filter-name-field"
             label="Название голосования"
@@ -111,7 +107,7 @@ export const MainPage: FC<unknown> = () => {
             }
            />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={12} sm={6} md={3}>
           <DropdownMenu 
             label="Выберите статус"
             menuItems={['Все', 'Идет голосование', 'Скоро начнется', 'Завершено']} 

@@ -20,7 +20,7 @@ export const AboutVotingPage: FC<unknown> = () => {
   const [status, setStatus] = useState<Status>(Status.Before);
   const [answerLabel, setAnswerLabel] = useState<string>("");
   const [voteLink, setVoteLink] = useState<string>("");
-  const [isVoted, setIsVoted] = useState<boolean>(false); // проверять в смарте (проголосовал ли аккаунт)
+  const [isVoted, setIsVoted] = useState<boolean>(false);
 
   let voted = -1;
 
@@ -61,7 +61,7 @@ export const AboutVotingPage: FC<unknown> = () => {
       handleClick={handleChangeVote}
       disabledBtn={isVoted || status === Status.Before || status === Status.Finished || answerLabel.length === 0 }>
       <Grid container spacing={2}>
-        <Grid item xs={4}>
+        <Grid item xs={12} md={4}>
           <Box mb={2}>
             <AboutVotingCard 
               startDateTime={new Date(voting.startDateTime)} 
@@ -77,10 +77,10 @@ export const AboutVotingPage: FC<unknown> = () => {
               onChange={handleChangeAnswer} />
           </Box>
         </Grid>
-        <Grid item xs={4}></Grid>
+        <Grid item xs={12} md={4}></Grid>
         {
           isVoted ? 
-          <Grid item xs={4}>
+          <Grid item xs={12} md={4}>
             <Box display="flex" gap="3px" mb="0.35em">
               <TransactionLink link={voteLink ? voteLink : `https://sepolia.etherscan.io/address/${voting.address}`}>
                 Транзакция

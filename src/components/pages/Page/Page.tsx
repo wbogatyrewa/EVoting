@@ -29,12 +29,12 @@ export const Page: FC<PageProps> = ({
   return (
     <Box>
       <Grid container spacing={2} position={'relative'} zIndex={5}>
-        <Grid item xs={voted && closed ? 8 : voted ? 9 : 11}>
+        <Grid item xs={10} sm={voted && closed ? 7 : voted ? 8 : 11} md={voted && closed ? 8 : voted ? 9 : 11}>
           <Typography variant="h4" mb={3}>{title}</Typography>
         </Grid>
         {
           voted ?
-          <Grid item xs={closed ? 2 : 3}>
+          <Grid item xs={10} sm={4} md={closed ? 2 : 3} mb={3}>
             <CustomButton 
               variant="contained" 
               onClick={handleClick}

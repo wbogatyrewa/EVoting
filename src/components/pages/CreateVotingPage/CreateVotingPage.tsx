@@ -119,8 +119,14 @@ export const CreateVotingPage: FC<unknown> = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Page title="Создание голосования" closed>
-        <Grid container spacing={10} position={'relative'}>
+      <Page 
+        title="Создание голосования" 
+        closed
+        voted
+        handleClick={handleClickCreateVoting} 
+        buttonChildren={"Создать  голосование"}
+        disabledBtn={!name || !voters || !answers || !startDateTime || !endDateTime}>
+        <Grid container rowSpacing={2} columnSpacing={10} position={'relative'}>
           {
             showLoader ? 
             <Box sx={[
@@ -141,7 +147,7 @@ export const CreateVotingPage: FC<unknown> = () => {
             </Box>
             : null
           }
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6}>
             <Box mb={2}>
               <Typography variant="subtitle1" color="text.primary" gutterBottom>Название</Typography>
               <Field 
@@ -190,14 +196,8 @@ export const CreateVotingPage: FC<unknown> = () => {
                 />
               </Box>
             </Box>
-            <CustomButton 
-              variant="contained"
-              onClick={handleClickCreateVoting}
-              disabled={!name || !voters || !answers || !startDateTime || !endDateTime}>
-              Создать  голосование
-            </CustomButton>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={6} md={4}>
             <Box>
               <Typography variant="subtitle1" color="text.primary">Срок голосования</Typography>
               <Box mb={1}>

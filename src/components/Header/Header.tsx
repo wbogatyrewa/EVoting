@@ -16,7 +16,11 @@ const HeaderWrapper = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 48px;
+  padding: 16px;
+
+  @media (min-width: 900px) {
+    padding: 16px 48px;
+  }
 `;
 
 export const Header: FC<Props> = ({ account, onLogin = () => {} }: Props) => {
