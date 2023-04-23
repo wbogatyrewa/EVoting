@@ -54,8 +54,8 @@ export const CreateVotingPage: FC<unknown> = () => {
   const [name, setName] = useState<string>("");
   const [voters, setVoters] = useState<string>("");
   const [answers, setAnswers] = useState<string[]>(["", ""]);
-  const [startDateTime, setStartDateTime] = useState<Dayjs | null>(dayjs());
-  const [endDateTime, setEndDateTime] = useState<Dayjs | null>(dayjs().add(1, 'day'));
+  const [startDateTime, setStartDateTime] = useState<Dayjs>(dayjs());
+  const [endDateTime, setEndDateTime] = useState<Dayjs>(dayjs().add(1, 'day'));
   const [showLoader, setShowLoader] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -193,7 +193,7 @@ export const CreateVotingPage: FC<unknown> = () => {
             <CustomButton 
               variant="contained"
               onClick={handleClickCreateVoting}
-              disabled={!name || !voters || !answers}>
+              disabled={!name || !voters || !answers || !startDateTime || !endDateTime}>
               Создать  голосование
             </CustomButton>
           </Grid>

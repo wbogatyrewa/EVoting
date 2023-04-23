@@ -49,7 +49,7 @@ export const AboutVotingPage: FC<unknown> = () => {
       return element.toLowerCase() === account.toLowerCase();
     });
 
-    checkIsVoted(voting.address, account).then((result) => setIsVoted(result));
+    if (account) checkIsVoted(voting.address, account).then((result) => setIsVoted(result));
   }, []);
   
   return (
