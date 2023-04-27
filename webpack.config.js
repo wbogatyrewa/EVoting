@@ -17,6 +17,17 @@ module.exports = {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: "svg-url-loader",
+            options: {
+              limit: 10000,
+            },
+          },
+        ],
+      },
       ...webpackRules,
     ],
   },
@@ -27,6 +38,9 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./public/index.html",
+      filename: "index.html",
+      favicon: "./public/favicon.ico",
+      manifest: "./public/manifest.json",
     }),
   ],
 };
