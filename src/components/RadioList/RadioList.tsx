@@ -42,7 +42,7 @@ const renderRadioList = (radioList: Array<Answer>, disabled?: boolean) => {
         value={item.label} 
         control={<Radio />} 
         disabled={disabled ? true : item.result ? true : false}
-        label={item.result ? `${item.label} (${(item.result / votes) * 100}%)` : item.label}
+        label={item.result ? `${item.label} (${((item.result / votes) * 100).toString().slice(0, 5)}%)` : item.label}
         sx={{
           backgroundColor: (max.label === item.label && max.result) ? 'primary.light' : 'transparent',
           ".MuiFormControlLabel-label.Mui-disabled": {
