@@ -10,7 +10,7 @@ export interface Props {
 
 export const createVoting = async ({ name, startDateTime, endDateTime, voters, proposalsNames }: Props ) => {
   let address = "";
-  const url = "http://localhost:8000/create-voting";
+  const url = "http://5.188.50.113:8000/create-voting";
   
   const voting = {
     name: name,
